@@ -1,0 +1,18 @@
+# Terraform state — may contain secrets, never commit
+*.tfstate
+*.tfstate.*
+**/.terraform/*
+.terraform.lock.hcl
+
+# Variable files often hold secrets
+*.tfvars
+*.tfvars.json
+!example.tfvars
+
+# Crash logs
+crash.log
+crash.*.log
+
+# Editor
+.vscode/
+.idea/
