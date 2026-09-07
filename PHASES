@@ -1,0 +1,124 @@
+#PHASES DRAFT 
+
+I host client websites manually on a VPS. Every new client means repeating the
+same setup by hand — provision the server, configure NGINX, set up SSL, write
+firewall rules, deploy the app. It is slow, easy to get wrong, and inconsistent
+between clients. If a server dies, rebuilding is a scramble.
+
+## The solution
+
+Codify that entire setup in Terraform so a complete, secured client environment
+stands up from a single command — and tears down just as cleanly.
+
+**Terraform makes the infrastructure reproducible. Docker makes the application
+deployment reproducible.** Together, every client environment comes up identical.
+
+---
+
+## Phases
+
+### Phase 0 — Foundation and remote state ✅
+
+S3 bucket for Terraform state with versioning, encryption, and public access
+blocked. Uses Terraform 1.10+ native S3 locking rather than a DynamoDB table.
+
+*Why:* Remote state is what makes Terraform usable by a team rather than one
+laptop. Locking prevents two concurrent applies from corrupting state. The
+bootstrap directory keeps its own state separate from the infrastructure, so
+destroying an environment can never delete the backend that tracks it.
+
+### Phase 1 — Networking ✅
+
+VPC with two public and two private subnets across two availability zones,
+internet gateway, and route tables. NAT gateway defined but disabled by default.
+
+*Why:* This is the security boundary. Private subnets have no route to the
+internet gateway, so the database is unreachable from outside regardless of any
+firewall rule. Two AZs mean a datacenter failure does not take the application
+down.
+
+### Phase 2 — Compute, database, and edge security 🔨
+
+Three-tier security groups, KMS customer-managed key, RDS MySQL in private
+subnets, credentials in Secrets Manager, Application Load Balancer with ACM TLS
+and an HTTP-to-HTTPS redirect, and AWS WAF in front of it.
+
+*Why:* Each tier accepts traffic only from the tier in front of it, referenced by
+security group ID rather than CIDR. WAF drops malicious requests at the edge
+before they reach compute. The database password is generated and stored in
+Secrets Manager so it never appears in a variables file.
+
+### Phase 3 — Containerization
+
+ECR repository with image scanning, a Dockerfile for the application, an IAM
+instance profile granting least-privilege ECR pull access, and user-data that
+pulls and runs the image.
+
+*Why:* Without containers, instances built weeks apart drift to different package
+versions. The image is a fixed artifact — what ran in testing runs in production.
+The instance assumes a role for ECR access rather than storing credentials.
+
+### Phase 4 — Modules and environment separation
+
+Refactor into reusable modules, then create dev and prod environments that call
+them with different variables.
+
+*Why:* Reusable infrastructure rather than one large file, and a demonstration of
+environment promotion.
+
+### Phase 5 — CI/CD and security gating
+
+GitHub Actions running `fmt`, `validate`, and `plan` on every pull request, with
+tfsec or checkov configured to **fail the build** on findings and a documented
+exception process.
+
+*Why:* Infrastructure changes become peer-reviewable rather than something run
+from a laptop. A security scanner that reports but does not block is theatre.
+
+### Phase 6 — Observability
+
+CloudWatch dashboards and alarms provisioned in Terraform — ASG CPU, ALB 5xx
+rate, RDS connections — with SNS notifications.
+
+*Why:* Monitoring as code means every environment is observable by default rather
+than instrumented as an afterthought.
+
+### Phase 7 — Identity Center
+
+Replace long-lived IAM access keys with short-lived session credentials via AWS
+IAM Identity Center.
+
+*Why:* Static access keys on a laptop are a standing risk. Short-lived
+credentials reduce the blast radius of a compromised machine to a single session.
+
+### Phase 8 — HCP Terraform migration
+
+Migrate the backend from self-managed S3 to HCP Terraform.
+
+*Why:* Building the S3 backend first meant understanding what the managed service
+does underneath. The migration itself demonstrates changing foundational
+infrastructure without losing state.
+
+### Phase 9 — Documentation
+
+README with the before-and-after framing and architecture diagram, DECISIONS.md
+capturing tradeoffs, a cost section, and a walkthrough video.
+
+---
+
+## Cost approach
+
+The Terraform code is the artifact — the infrastructure does not need to run
+continuously. `terraform destroy` runs whenever the stack is not being actively
+tested or demonstrated, keeping spend near zero. Billing alarms are configured at
+$5 and $20.
+
+NAT gateway (~$32/month) is disabled by default. VPC endpoints for ECR are the
+cheaper and more appropriate alternative for pulling container images.
+
+## Deliberately out of scope
+
+**Kubernetes.** Docker on EC2 with an autoscaling group maps directly onto the
+VPS workflow being replaced and keeps the before-and-after story clear. ECS or
+Fargate would be the more modern choice; that tradeoff is documented rather than
+hidden.
