@@ -28,3 +28,10 @@ variable "environments" {
   type        = list(string)
   default     = ["dev", "staging", "prod"]
 }
+
+#DNS 
+variable "domain_name"{
+  description = "Domain name for the app"
+  type = string
+  default = "app.daily-bugglespiderman.com"
+}
