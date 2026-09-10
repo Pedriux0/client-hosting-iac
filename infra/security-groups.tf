@@ -82,3 +82,23 @@ resource "aws_vpc_security_group_egress_rule" "web_https_out"{
     ip_protocol = "tcp"
 }
 
+///TIER 3 : DB only ffrom the web tier
+
+resource "aws_security_group" "db" {
+    name = "${var.project.name} DB SG"
+    description = "Accept SQL from the Web"
+
+    vpc_id = aws_vpc.main
+
+    tags = {Name =  "${var.project.name} - db -sg"}
+}
+
+resource "aws_vpc_security_group_ingress_rule" "db_from_the_web"{
+    security_group_id = aws_security_group.db.id 
+    description = "SG FROM THE WEB TIER"
+
+    referenced_security_group_id = aws_security_group.web.id
+    from_port = 3306
+    to_port = 3306
+    ip_protocol = "tcp"
+}
