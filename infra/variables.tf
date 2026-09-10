@@ -30,8 +30,8 @@ variable "environments" {
 }
 
 #DNS 
-variable "domain_name"{
+variable "domain_name" {
   description = "Domain name for the app"
-  type = string
-  default = "app.daily-bugglespiderman.com"
+  type        = string
+  default     = "app.daily-bugglespiderman.com"
 }
