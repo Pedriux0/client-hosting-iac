@@ -12,7 +12,7 @@ terraform {
   #Backend configuration for Terraform state storage in S3
   backend "s3" {
     bucket       = "client-hosting-tfstate-eb6b3ade" # the bucket name
-    key          = "infra/terraform.tfstate"         # the path inside the bucket
+    key          = "ephemeral/terraform.tfstate"     # the path inside the bucket
     region       = "us-east-1"
     encrypt      = true
     use_lockfile = true
@@ -31,3 +31,13 @@ provider "aws" {
   }
 }
 
+# Outputs from the persistent layer (VPC, subnets, SGs, KMS, secrets)
+data "terraform_remote_state" "persistent" {
+  backend = "s3"
+
+  config = {
+    bucket = "client-hosting-tfstate-eb6b3ade"
+    key    = "persistent/terraform.tfstate"
+    region = "us-east-1"
+  }
+}
