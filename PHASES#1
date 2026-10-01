@@ -15,6 +15,34 @@ deployment reproducible.** Together, every client environment comes up identical
 
 ---
 
+## Current status (updated)
+
+Mid-refactor: the original single `infra/` directory is being split into a
+long-lived `persistent/` layer and a disposable `ephemeral/` layer, each with
+its own S3 state key and native locking.
+
+- `persistent/`: VPC, subnets, security groups, KMS key, Secrets Manager secret,
+  ALB, target group, and ACM live here. `terraform init`, `validate`, and
+  `fmt -check` all pass. `terraform plan` is clean: **29 to add, 0 to change,
+  0 to destroy**. Not yet applied.
+- `ephemeral/`: currently holds the RDS database, wired to read `persistent`
+  outputs via a `terraform_remote_state` data source. `init` and `validate`
+  pass; `plan` correctly fails until `persistent` is applied (the remote-state
+  lookup has no outputs yet). This confirms the apply order: persistent first,
+  then ephemeral.
+- `infra/`: stale `.tf` duplicates already removed; only its lock file remains,
+  to be deleted manually after the layer is destroyed.
+
+Specs drafted (requirements approved, not yet implemented):
+- `lifecycle-split` — complete the persistent/ephemeral split and remove infra/.
+- `waf-protection` — regional WAFv2 web ACL in front of the ALB.
+- `container-web-tier` — ECR (persistent) plus EC2/ASG web tier (ephemeral).
+
+Note: apply/destroy are run manually by the operator per the steering safety
+rules; the agent only runs fmt/validate/init/plan.
+
+---
+
 ## Phases
 
 ### Phase 0 — Foundation and remote state ✅
@@ -43,6 +71,11 @@ Three-tier security groups, KMS customer-managed key, RDS MySQL in private
 subnets, credentials in Secrets Manager, Application Load Balancer with ACM TLS
 and an HTTP-to-HTTPS redirect, and AWS WAF in front of it.
 
+*Status:* Security groups, KMS key, Secrets Manager, ALB, target group, and ACM
+are written in `persistent/` and plan cleanly (29 adds, 0 destroys). RDS lives in
+`ephemeral/`. WAF is specced (`waf-protection`) but not yet written. Nothing in
+this phase is applied yet.
+
 *Why:* Each tier accepts traffic only from the tier in front of it, referenced by
 security group ID rather than CIDR. WAF drops malicious requests at the edge
 before they reach compute. The database password is generated and stored in
@@ -53,6 +86,10 @@ Secrets Manager so it never appears in a variables file.
 ECR repository with image scanning, a Dockerfile for the application, an IAM
 instance profile granting least-privilege ECR pull access, and user-data that
 pulls and runs the image.
+
+*Status:* Specced as `container-web-tier` (requirements approved). ECR goes in
+`persistent/` so images survive ephemeral destroy cycles; the EC2/ASG web tier
+goes in `ephemeral/`. Not yet written or applied.
 
 *Why:* Without containers, instances built weeks apart drift to different package
 versions. The image is a fixed artifact — what ran in testing runs in production.
