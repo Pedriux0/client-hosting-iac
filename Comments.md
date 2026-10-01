@@ -12,3 +12,6 @@ Well, i can descrite what i have learned: 1 the config of the VPC publics are fa
 4.Remember that if you have more than one account and ssh key for github in machine try to authentice with the one that you want to use instead of changing everytime that you need each account a config file help me to solve this with just ONE account 
 
 5.Delegation of Domains can be a pain so instead of a custom NS record for subdomain ( which hostinger did not allow ) i use the ACM certification in Terraform with the AWS ACM , so we use a CNAME recod which hostinger can provide 
+
+6.The ephemeral is for the microservices that are going to be destroy each time those that charge for the service and the persistent are the ones that are going to be all time up saving money and time in execution 
+
