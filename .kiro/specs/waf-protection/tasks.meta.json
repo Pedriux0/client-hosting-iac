@@ -1,0 +1,189 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1. Scaffold `persistent/waf.tf`": [
+      {
+        "executionId": "c536d375-ac35-4a2b-8ae7-1e933895c7e2",
+        "chatSessionId": "sess_cf037070-9208-45dc-958f-3b9ea1d9e2db",
+        "timestamp": 1790815013179
+      },
+      {
+        "executionId": "c536d375-ac35-4a2b-8ae7-1e933895c7e2",
+        "chatSessionId": "sess_cf037070-9208-45dc-958f-3b9ea1d9e2db",
+        "timestamp": 1790815019861
+      },
+      {
+        "executionId": "c536d375-ac35-4a2b-8ae7-1e933895c7e2",
+        "chatSessionId": "sess_cf037070-9208-45dc-958f-3b9ea1d9e2db",
+        "timestamp": 1790815055676
+      }
+    ],
+    "2.1 Declare `aws_wafv2_web_acl.main` with scope, default action, name, and tag": [
+      {
+        "executionId": "c536d375-ac35-4a2b-8ae7-1e933895c7e2",
+        "chatSessionId": "sess_cf037070-9208-45dc-958f-3b9ea1d9e2db",
+        "timestamp": 1790815013234
+      },
+      {
+        "executionId": "c536d375-ac35-4a2b-8ae7-1e933895c7e2",
+        "chatSessionId": "sess_cf037070-9208-45dc-958f-3b9ea1d9e2db",
+        "timestamp": 1790815058265
+      },
+      {
+        "executionId": "c536d375-ac35-4a2b-8ae7-1e933895c7e2",
+        "chatSessionId": "sess_cf037070-9208-45dc-958f-3b9ea1d9e2db",
+        "timestamp": 1790815099208
+      }
+    ],
+    "2.2 Add the top-level Web ACL `visibility_config`": [
+      {
+        "executionId": "c536d375-ac35-4a2b-8ae7-1e933895c7e2",
+        "chatSessionId": "sess_cf037070-9208-45dc-958f-3b9ea1d9e2db",
+        "timestamp": 1790815013267
+      },
+      {
+        "executionId": "c536d375-ac35-4a2b-8ae7-1e933895c7e2",
+        "chatSessionId": "sess_cf037070-9208-45dc-958f-3b9ea1d9e2db",
+        "timestamp": 1790815103786
+      },
+      {
+        "executionId": "c536d375-ac35-4a2b-8ae7-1e933895c7e2",
+        "chatSessionId": "sess_cf037070-9208-45dc-958f-3b9ea1d9e2db",
+        "timestamp": 1790815138373
+      }
+    ],
+    "3.1 Add the Common Rule Set rule (priority 0)": [
+      {
+        "executionId": "c536d375-ac35-4a2b-8ae7-1e933895c7e2",
+        "chatSessionId": "sess_cf037070-9208-45dc-958f-3b9ea1d9e2db",
+        "timestamp": 1790815013300
+      },
+      {
+        "executionId": "c536d375-ac35-4a2b-8ae7-1e933895c7e2",
+        "chatSessionId": "sess_cf037070-9208-45dc-958f-3b9ea1d9e2db",
+        "timestamp": 1790815141964
+      },
+      {
+        "executionId": "c536d375-ac35-4a2b-8ae7-1e933895c7e2",
+        "chatSessionId": "sess_cf037070-9208-45dc-958f-3b9ea1d9e2db",
+        "timestamp": 1790815180145
+      }
+    ],
+    "3.2 Add the Known Bad Inputs rule (priority 1)": [
+      {
+        "executionId": "c536d375-ac35-4a2b-8ae7-1e933895c7e2",
+        "chatSessionId": "sess_cf037070-9208-45dc-958f-3b9ea1d9e2db",
+        "timestamp": 1790815013333
+      },
+      {
+        "executionId": "c536d375-ac35-4a2b-8ae7-1e933895c7e2",
+        "chatSessionId": "sess_cf037070-9208-45dc-958f-3b9ea1d9e2db",
+        "timestamp": 1790815182710
+      },
+      {
+        "executionId": "c536d375-ac35-4a2b-8ae7-1e933895c7e2",
+        "chatSessionId": "sess_cf037070-9208-45dc-958f-3b9ea1d9e2db",
+        "timestamp": 1790815220545
+      }
+    ],
+    "3.3 Add the SQLi Rule Set rule (priority 2)": [
+      {
+        "executionId": "c536d375-ac35-4a2b-8ae7-1e933895c7e2",
+        "chatSessionId": "sess_cf037070-9208-45dc-958f-3b9ea1d9e2db",
+        "timestamp": 1790815013367
+      },
+      {
+        "executionId": "c536d375-ac35-4a2b-8ae7-1e933895c7e2",
+        "chatSessionId": "sess_cf037070-9208-45dc-958f-3b9ea1d9e2db",
+        "timestamp": 1790815224052
+      },
+      {
+        "executionId": "c536d375-ac35-4a2b-8ae7-1e933895c7e2",
+        "chatSessionId": "sess_cf037070-9208-45dc-958f-3b9ea1d9e2db",
+        "timestamp": 1790815290490
+      }
+    ],
+    "4. Implement the rate-based rule (priority 3)": [
+      {
+        "executionId": "c536d375-ac35-4a2b-8ae7-1e933895c7e2",
+        "chatSessionId": "sess_cf037070-9208-45dc-958f-3b9ea1d9e2db",
+        "timestamp": 1790815013397
+      },
+      {
+        "executionId": "c536d375-ac35-4a2b-8ae7-1e933895c7e2",
+        "chatSessionId": "sess_cf037070-9208-45dc-958f-3b9ea1d9e2db",
+        "timestamp": 1790815293382
+      },
+      {
+        "executionId": "c536d375-ac35-4a2b-8ae7-1e933895c7e2",
+        "chatSessionId": "sess_cf037070-9208-45dc-958f-3b9ea1d9e2db",
+        "timestamp": 1790815360924
+      }
+    ],
+    "5. Implement the Web ACL to ALB association": [
+      {
+        "executionId": "c536d375-ac35-4a2b-8ae7-1e933895c7e2",
+        "chatSessionId": "sess_cf037070-9208-45dc-958f-3b9ea1d9e2db",
+        "timestamp": 1790815013431
+      },
+      {
+        "executionId": "c536d375-ac35-4a2b-8ae7-1e933895c7e2",
+        "chatSessionId": "sess_cf037070-9208-45dc-958f-3b9ea1d9e2db",
+        "timestamp": 1790815363489
+      },
+      {
+        "executionId": "c536d375-ac35-4a2b-8ae7-1e933895c7e2",
+        "chatSessionId": "sess_cf037070-9208-45dc-958f-3b9ea1d9e2db",
+        "timestamp": 1790815443368
+      }
+    ],
+    "7. Static verification (read-only; agent-runnable)": [
+      {
+        "executionId": "c536d375-ac35-4a2b-8ae7-1e933895c7e2",
+        "chatSessionId": "sess_cf037070-9208-45dc-958f-3b9ea1d9e2db",
+        "timestamp": 1790815013466
+      },
+      {
+        "executionId": "c536d375-ac35-4a2b-8ae7-1e933895c7e2",
+        "chatSessionId": "sess_cf037070-9208-45dc-958f-3b9ea1d9e2db",
+        "timestamp": 1790815454414
+      },
+      {
+        "executionId": "c536d375-ac35-4a2b-8ae7-1e933895c7e2",
+        "chatSessionId": "sess_cf037070-9208-45dc-958f-3b9ea1d9e2db",
+        "timestamp": 1790815529871
+      }
+    ],
+    "8. Document operator-run apply and manual runtime verification": [
+      {
+        "executionId": "c536d375-ac35-4a2b-8ae7-1e933895c7e2",
+        "chatSessionId": "sess_cf037070-9208-45dc-958f-3b9ea1d9e2db",
+        "timestamp": 1790815013497
+      },
+      {
+        "executionId": "c536d375-ac35-4a2b-8ae7-1e933895c7e2",
+        "chatSessionId": "sess_cf037070-9208-45dc-958f-3b9ea1d9e2db",
+        "timestamp": 1790815532835
+      },
+      {
+        "executionId": "c536d375-ac35-4a2b-8ae7-1e933895c7e2",
+        "chatSessionId": "sess_cf037070-9208-45dc-958f-3b9ea1d9e2db",
+        "timestamp": 1790815601544
+      }
+    ],
+    "2. Implement the Web ACL shell (default action, scope, naming/tagging, visibility)": [
+      {
+        "executionId": "c536d375-ac35-4a2b-8ae7-1e933895c7e2",
+        "chatSessionId": "sess_cf037070-9208-45dc-958f-3b9ea1d9e2db",
+        "timestamp": 1790815138402
+      }
+    ],
+    "3. Implement the three AWS managed rule groups (priority 0–2)": [
+      {
+        "executionId": "c536d375-ac35-4a2b-8ae7-1e933895c7e2",
+        "chatSessionId": "sess_cf037070-9208-45dc-958f-3b9ea1d9e2db",
+        "timestamp": 1790815290545
+      }
+    ]
+  }
+}
